@@ -87,14 +87,17 @@ class flip(znc.Module):
         if c in self._aliases:
             c = self._aliases[c]
 
-        if c in self._dongers or (len(m.split()) > 1 and '~' + c in self._dongers):
+        if c in self._dongers or '~' + c in self._dongers:
             if len(m.split()) > 1 and '~' + c in self._dongers:
                 str = self._dongers['~' + c]
                 str = str.replace('uuu', user)
                 str = str.replace('xxx', self._flipit(text=m.split()[1]))
                 str = str.replace('yyy', m.split()[1])
-            else:
+            elif c in self._dongers:
                 str = self._dongers[c]
+            else:
+                return znc.HALTCORE
+
             outIRC = "PRIVMSG {0} :{1}".format(target, str)
             outUser = (":{2} PRIVMSG {0} :{1}").format(target, str, user)
             outRet = znc.HALT
