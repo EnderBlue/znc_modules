@@ -13,6 +13,7 @@ class flip(znc.Module):
         'c':  ' ┬┬ ノ( ゜-゜ノ)',
         's':  '¯\_(ツ)_/¯',
         'b':  '╭∩╮( ͡° ͜ʖ͡°)',
+        'u':  'test',
     }
 
 
@@ -67,15 +68,7 @@ class flip(znc.Module):
         outRet = znc.CONTINUE
         outReverse = ""
 
-        config = os.path.expanduser("~") + "/.fliptable"
-        if os.path.isfile(config):
-            f = open(config, 'r')
-            for line in f:
-                if line.split()[0] == "user:":
-                    user = line.split()[1]
-
-        if user == "":
-            user = self.GetUser()
+        user = self.GetClient().GetNick()
 
         m = message.s
         c = m[:2].replace('\\', '');
