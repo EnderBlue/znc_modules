@@ -87,7 +87,7 @@ class flip(znc.Module):
             c = self._aliases[c]
 
         if c in self._dongers:
-            if len(m) > 2 and '~' + c in self._dongers:
+            if len(m.split()) > 2 and '~' + c in self._dongers:
                 str = self._dongers['~' + c].replace('xxx', self._flipit(text=m.split()[1]))
                 str = str.replace('yyy', m.split()[1])
             else:
