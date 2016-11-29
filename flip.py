@@ -24,7 +24,7 @@ class flip(znc.Module):
         's':  '¯\_(ツ)_/¯',
         'b':  '╭∩╮( ͡° ͜ʖ͡°)',
         'u':  'test',
-        '~slap':'uuu slaps yyy around a bit with a large trout',
+        '~slap':'\x01ACTION slaps yyy around a bit with a large trout\x01',
     }
 
 
@@ -100,7 +100,7 @@ class flip(znc.Module):
             elif c in self._dongers:
                 str = self._dongers[c]
             else:
-                return znc.HALTCORE
+                return znc.HALT
 
             outIRC = "PRIVMSG {0} :{1}".format(target, str)
             outUser = (":{2} PRIVMSG {0} :{1}").format(target, str, user)
