@@ -15,11 +15,11 @@ class flip(znc.Module):
     description = "Example python3 module for ZNC"
 
     _dongers = {
-        '\\f': '(╯°□°)╯︵ ┻━┻',
-        '\\t': '(ノಠ益ಠ)ノ彡 ┻━┻',
-        '\\c': ' ┬┬ ノ( ゜-゜ノ)',
-        '\\s': '¯\_(ツ)_/¯',
-        '\\b': '╭∩╮( ͡° ͜ʖ͡°)',
+        'f': '(╯°□°)╯︵ ┻━┻',
+        't': '(ノಠ益ಠ)ノ彡 ┻━┻',
+        'c': ' ┬┬ ノ( ゜-゜ノ)',
+        's': '¯\_(ツ)_/¯',
+        'b': '╭∩╮( ͡° ͜ʖ͡°)',
     }
 
 
@@ -75,7 +75,7 @@ class flip(znc.Module):
         outReverse = ""
 
         m = message.s
-        c = m[:2]
+        c = m[:2].replace('\\', '');
 
         if self._dongers[c]:
 #            disable for now..
