@@ -82,6 +82,10 @@ class flip(znc.Module):
         user = self.GetClient().GetNick()
 
         m = message.s
+
+        if (m.split()[0][0]) != '\\':
+            return outRet
+
         c = m.split()[0].replace('\\', '')
 
         if c in self._aliases:
