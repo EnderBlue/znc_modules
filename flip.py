@@ -66,7 +66,16 @@ class flip(znc.Module):
         outUser = ""
         outRet = znc.CONTINUE
         outReverse = ""
-        user = self.GetUser()
+
+        config = os.path.expanduser("~") + "/.fliptable"
+        if os.path.isfile(config):
+            f = open(config, 'r')
+            for line in f:
+                if line.split()[0] == "user:":
+                    user = line.split()[1]
+
+        if user == "":
+            user = self.GetUser()
 
         m = message.s
         c = m[:2].replace('\\', '');
