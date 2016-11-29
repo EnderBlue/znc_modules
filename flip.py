@@ -1,15 +1,6 @@
 # flip.py
 
-import os
 import znc
-
-# Create a ~/.fliptable with:
-#  user: myuser
-# in order to set your username (until you update znc...)
-f = open(os.path.expanduser("~") + "/.fliptable", 'r')
-for line in f:
-    if line.split()[0] == "user:":
-        USER=line.split()[1]
 
 class flip(znc.Module):
     description = "Example python3 module for ZNC"
@@ -73,6 +64,7 @@ class flip(znc.Module):
         outUser = ""
         outRet = znc.CONTINUE
         outReverse = ""
+        user = self.GetUser()
 
         m = message.s
         c = m[:2].replace('\\', '');
@@ -82,8 +74,8 @@ class flip(znc.Module):
 #            if c == '\\f' or c == '\\t':
 #                if len(m) > 2:
 #                    outReverse = "  " + self._flipit(c)
-            outIRC = ("PRIVMSG {0} : " + self._dongers[c]).format(target) + outReverse
-            outUser = (":" + USER + " PRIVMSG {0} :" + self._dongers[c]).format(target) + outReverse
+            outIRC = "PRIVMSG {0} :{1}".format(target, self._dongers[c] + outReverse)
+            outUser = ":{2} PRIVMSG {0} :{1}".format(target, self._dongers[c] + outReverse, user)
             outRet = znc.HALT
 
 
