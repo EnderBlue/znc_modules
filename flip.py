@@ -74,6 +74,51 @@ class flip(znc.Module):
 
         return flipped
 
+    def OnLoad(self, args, message):
+        tempNV = self.nv
+        for k, v in self.nv.items():
+            if k not in self._dongers:
+                self._dongers[k] = v
+
+        for k, v in self._dongers.items():
+            if k not in self.nv:
+                self.nv[k] = v
+
+        self.PutModule("WooHoo, flip loaded")
+        return znc.CONTINUE
+
+    def OnModCommand(self, command):
+        cmd = command.split()[0]
+        outMod = ""
+        if cmd == 'list':
+            for k, v in self._dongers.items():
+                self.PutModule(("{0}: {1}").format(k, v))
+        if cmd == 'nv':
+            for k, v in self.nv.items():
+                self.PutModule(("{0}: {1}").format(k, v))
+        elif cmd == 'add':
+            if len(command.split()) > 2:
+                k = command.split()[1]
+                v = command.split()[2]
+                self._dongers[k] = v
+                self.nv[k] = v
+                outMod = (("Flip Alias Added: {0}->{1}").format(k, v))
+        elif cmd == 'delete':
+            if len(command.split()) > 1:
+                k = command.split()[1]
+                self._dongers.pop(k, None)
+                self.nv.pop(k, None)
+                outMod = "Flip Alias '{0}' Removed.".format(k)
+            else:
+                outMod = "A flip alias must be defined in order to remove it."
+
+        elif cmd == 'help':
+            outMod = "This should be some help."
+
+        if len(outMod) > 0:
+            self.PutModule(outMod)
+
+        return znc.HALT
 
     def OnUserMsg(self, target, message):
         outIRC = ""
