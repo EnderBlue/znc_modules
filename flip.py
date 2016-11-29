@@ -95,7 +95,7 @@ class flip(znc.Module):
                 str = str.replace('yyy', m.split()[1])
             else:
                 str = self._dongers[c]
-            outIRC = "PRIVMSG {0} : {1}".format(target, str)
+            outIRC = "PRIVMSG {0} :{1}".format(target, str)
             outUser = (":{2} PRIVMSG {0} :{1}").format(target, str, user)
             outRet = znc.HALT
 
@@ -107,7 +107,3 @@ class flip(znc.Module):
             self.PutUser(outUser)
 
         return outRet
-
-#    def OnUserTextMessage(self, message):
-#        self.PutModule("UserTextMessage said {0}".format(message))
-
