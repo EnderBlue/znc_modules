@@ -3,7 +3,7 @@
 import znc
 
 class flip(znc.Module):
-    description = "Example python3 module for ZNC"
+    description = "DONGERS for ZNC"
 
     _aliases = {
         'flip':     'f',
@@ -24,6 +24,7 @@ class flip(znc.Module):
         's':  '¯\_(ツ)_/¯',
         'b':  '╭∩╮( ͡° ͜ʖ͡°)',
         'u':  'test',
+        '~slap':'uuu slaps yyy around a bit with a large trout',
     }
 
 
@@ -81,14 +82,16 @@ class flip(znc.Module):
         user = self.GetClient().GetNick()
 
         m = message.s
-        c = m.split()[0].replace('\\', '');
+        c = m.split()[0].replace('\\', '')
 
         if c in self._aliases:
             c = self._aliases[c]
 
-        if c in self._dongers:
-            if len(m.split()) > 2 and '~' + c in self._dongers:
-                str = self._dongers['~' + c].replace('xxx', self._flipit(text=m.split()[1]))
+        if c in self._dongers or (len(m.split()) > 1 and '~' + c in self._dongers):
+            if len(m.split()) > 1 and '~' + c in self._dongers:
+                str = self._dongers['~' + c]
+                str = str.replace('uuu', user)
+                str = str.replace('xxx', self._flipit(text=m.split()[1]))
                 str = str.replace('yyy', m.split()[1])
             else:
                 str = self._dongers[c]
