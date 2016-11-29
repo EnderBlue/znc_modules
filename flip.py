@@ -6,11 +6,13 @@ class flip(znc.Module):
     description = "Example python3 module for ZNC"
 
     _dongers = {
-        'f': '(╯°□°)╯︵ ┻━┻',
-        't': '(ノಠ益ಠ)ノ彡 ┻━┻',
-        'c': ' ┬┬ ノ( ゜-゜ノ)',
-        's': '¯\_(ツ)_/¯',
-        'b': '╭∩╮( ͡° ͜ʖ͡°)',
+        'f':  '(╯°□°)╯︵ ┻━┻',
+        '~f': '(╯°□°)╯︵ xxx',
+        't':  '(ノಠ益ಠ)ノ彡 ┻━┻',
+        '~t': '(ノಠ益ಠ)ノ彡 xxx',
+        'c':  ' ┬┬ ノ( ゜-゜ノ)',
+        's':  '¯\_(ツ)_/¯',
+        'b':  '╭∩╮( ͡° ͜ʖ͡°)',
     }
 
 
@@ -70,11 +72,12 @@ class flip(znc.Module):
         c = m[:2].replace('\\', '');
 
         if self._dongers[c]:
-            if c == 'f' or c == 't':
-                if len(m) > 2:
-                    outReverse = "  " + self._flipit(m[2:])
-            outIRC = "PRIVMSG {0} :{1}".format(target, self._dongers[c] + outReverse)
-            outUser = ":{2} PRIVMSG {0} :{1}".format(target, self._dongers[c] + outReverse, user)
+            if len(m) > 2 and self._dongers['~' + c]:
+                str = self._dongers['~' + c].replace('xxx', self._flipit(text=m[2:]))
+            else:
+                str = self._dongers[c]
+            outIRC = "PRIVMSG {0} : {1}".format(target, str)
+            outUser = (":{2} PRIVMSG {0} :{1}").format(target, str, user)
             outRet = znc.HALT
 
 
