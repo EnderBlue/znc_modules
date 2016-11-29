@@ -2,6 +2,8 @@
 
 import znc
 
+USER="EnderBlue"
+
 class flip(znc.Module):
     description = "Example python3 module for ZNC"
 
@@ -61,29 +63,29 @@ class flip(znc.Module):
             if len(message.s) > 2:
                 outReverse = "  " + self._flipit(message.s[2:])
             outIRC = "PRIVMSG {0} :(╯°□°)╯︵ ┻━┻".format(target) + outReverse
-            outUser = ":EnderBlue PRIVMSG {0} :(╯°□°)╯︵ ┻━┻".format(target) + outReverse
+            outUser = ":" + USER + " PRIVMSG {0} :(╯°□°)╯︵ ┻━┻".format(target) + outReverse
             outRet = znc.HALT
 
         elif message.s[:2] == '\\t':
             if len(message.s) > 2:
                 outReverse = "  " + self._flipit(message.s[2:])
             outIRC = "PRIVMSG {0} :(ノಠ益ಠ)ノ彡 ┻━┻".format(target) + outReverse
-            outUser = ":EnderBlue PRIVMSG {0} :(ノಠ益ಠ)ノ彡 ┻━┻".format(target) + outReverse
+            outUser = ":" + USER + " PRIVMSG {0} :(ノಠ益ಠ)ノ彡 ┻━┻".format(target) + outReverse
             outRet = znc.HALT
 
         elif message.s[:2] == '\\c':
             outIRC = "PRIVMSG {0} : ┬┬ ノ( ゜-゜ノ)".format(target) + outReverse
-            outUser = ":EnderBlue PRIVMSG {0} : ┬┬ ノ( ゜-゜ノ)".format(target) + outReverse
+            outUser = ":" + USER + " PRIVMSG {0} : ┬┬ ノ( ゜-゜ノ)".format(target) + outReverse
             outRet = znc.HALT
 
         elif message.s[:2] == '\\b':
             outIRC = "PRIVMSG {0} :╭∩╮( ͡°﻿ ͜ʖ͡°)".format(target) + outReverse
-            outUser = ":EnderBlue PRIVMSG {0} :╭∩╮( ͡°﻿ ͜ʖ͡°)".format(target) + outReverse
+            outUser = ":" + USER + " PRIVMSG {0} :╭∩╮( ͡°﻿ ͜ʖ͡°)".format(target) + outReverse
             outRet = znc.HALT
 
         elif message.s[:2] == '\\s':
             outIRC = "PRIVMSG {0} :¯\_(ツ)_/¯".format(target) + outReverse
-            outUser = ":EnderBlue PRIVMSG {0} :¯\_(ツ)_/¯".format(target) + outReverse
+            outUser = ":" + USER + " PRIVMSG {0} :¯\_(ツ)_/¯".format(target) + outReverse
             outRet = znc.HALT
 
 
