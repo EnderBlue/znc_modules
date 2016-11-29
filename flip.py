@@ -11,6 +11,7 @@ class flip(znc.Module):
         't':  '(ノಠ益ಠ)ノ彡 ┻━┻',
         '~t': '(ノಠ益ಠ)ノ彡 xxx',
         'c':  ' ┬┬ ノ( ゜-゜ノ)',
+        '~c':  'yyy ノ( ゜-゜ノ)',
         's':  '¯\_(ツ)_/¯',
         'b':  '╭∩╮( ͡° ͜ʖ͡°)',
         'u':  'test',
@@ -75,7 +76,9 @@ class flip(znc.Module):
 
         if self._dongers[c]:
             if len(m) > 2 and self._dongers['~' + c]:
-                str = self._dongers['~' + c].replace('xxx', self._flipit(text=m[2:]))
+                str = self._dongers['~' + c]
+                str = str.replace('xxx', self._flipit(text=m[2:]))
+                str = str.replace('yyy', m[2:])
             else:
                 str = self._dongers[c]
             outIRC = "PRIVMSG {0} : {1}".format(target, str)
