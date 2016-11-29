@@ -12,6 +12,7 @@ class flip(znc.Module):
         'shrug':    's',
         'shruggie': 's',
         'meh':      's',
+        'unimpressed': 'u',
     }
 
     _dongers = {
@@ -23,7 +24,8 @@ class flip(znc.Module):
         '~c':  'yyy ノ( ゜-゜ノ)',
         's':  '¯\_(ツ)_/¯',
         'b':  '╭∩╮( ͡° ͜ʖ͡°)',
-        'u':  'test',
+        'test': 'test',
+        'u': 'ಠ_ಠ ',
         '~slap':'\x01ACTION slaps yyy around a bit with a large trout\x01',
     }
 
