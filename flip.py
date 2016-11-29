@@ -1,8 +1,15 @@
 # flip.py
 
+import os
 import znc
 
-USER="EnderBlue"
+# Create a ~/.fliptable with:
+#  user: myuser
+# in order to set your username (until you update znc...)
+f = open(os.path.expanduser("~") + "/.fliptable", 'r')
+for line in f:
+    if line.split()[0] == "user:":
+        USER=line.split()[1]
 
 class flip(znc.Module):
     description = "Example python3 module for ZNC"
