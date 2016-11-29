@@ -70,10 +70,9 @@ class flip(znc.Module):
         c = m[:2].replace('\\', '');
 
         if self._dongers[c]:
-#            disable for now..
-#            if c == '\\f' or c == '\\t':
-#                if len(m) > 2:
-#                    outReverse = "  " + self._flipit(c)
+            if c == 'f' or c == 't':
+                if len(m) > 2:
+                    outReverse = "  " + self._flipit(m[2:])
             outIRC = "PRIVMSG {0} :{1}".format(target, self._dongers[c] + outReverse)
             outUser = ":{2} PRIVMSG {0} :{1}".format(target, self._dongers[c] + outReverse, user)
             outRet = znc.HALT
