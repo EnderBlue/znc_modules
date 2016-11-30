@@ -89,6 +89,7 @@ class flip(znc.Module):
 
     def OnModCommand(self, command):
         cmd = command.split()[0]
+        args = command.replace(cmd, '').strip()
         outMod = ""
         if cmd == 'list':
             for k, v in self._dongers.items():
@@ -97,15 +98,17 @@ class flip(znc.Module):
             for k, v in self.nv.items():
                 self.PutModule(("{0}: {1}").format(k, v))
         elif cmd == 'add':
-            if len(command.split()) > 2:
-                k = command.split()[1]
-                v = command.split()[2]
+            if len(args.split()) > 1:
+                k = args.split()[0]
+                v = args.replace(k, '').strip()
                 self._dongers[k] = v
                 self.nv[k] = v
                 outMod = (("Flip Alias Added: {0}->{1}").format(k, v))
+            else:
+                outMod = "Not enough arguments given: {0}".format(args)
         elif cmd == 'delete':
-            if len(command.split()) > 1:
-                k = command.split()[1]
+            if len(args) > 0:
+                k = args.split()[0]
                 self._dongers.pop(k, None)
                 self.nv.pop(k, None)
                 outMod = "Flip Alias '{0}' Removed.".format(k)
@@ -134,16 +137,17 @@ class flip(znc.Module):
             return outRet
 
         c = m.split()[0].replace('\\', '')
+        a = m[1:].replace(c, '').strip()
 
         if c in self._aliases:
             c = self._aliases[c]
 
         if c in self._dongers or '~' + c in self._dongers:
-            if len(m.split()) > 1 and '~' + c in self._dongers:
+            if len(a.split()) > 0 and '~' + c in self._dongers:
                 str = self._dongers['~' + c]
                 str = str.replace('uuu', user)
-                str = str.replace('xxx', self._flipit(text=m.split()[1]))
-                str = str.replace('yyy', m.split()[1])
+                str = str.replace('xxx', self._flipit(text=a))
+                str = str.replace('yyy', a)
             elif c in self._dongers:
                 str = self._dongers[c]
             else:
@@ -152,7 +156,6 @@ class flip(znc.Module):
             outIRC = "PRIVMSG {0} :{1}".format(target, str)
             outUser = (":{2} PRIVMSG {0} :{1}").format(target, str, user)
             outRet = znc.HALT
-
 
         if outIRC != "":
             self.PutIRC(outIRC)
