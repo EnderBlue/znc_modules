@@ -1,6 +1,10 @@
 # flip.py
 
 import znc
+import sys
+#import marshal
+#import pickle
+import json
 
 class flip(znc.Module):
     description = "DONGERS for ZNC"
@@ -76,13 +80,23 @@ class flip(znc.Module):
 
     def OnLoad(self, args, message):
         tempNV = self.nv
-        for k, v in self.nv.items():
-            if k not in self._dongers:
-                self._dongers[k] = v
+        if 'dongers' in self.nv:
+            self._dongers = json.loads(self.nv['dongers'])
+        else:
+            self.nv['dongers'] = json.dumps(self._dongers)
 
-        for k, v in self._dongers.items():
-            if k not in self.nv:
-                self.nv[k] = v
+        if 'aliases' in self.nv:
+            self._aliases = json.loads(self.nv['aliases'])
+        else:
+            self.nv['aliases'] = json.dumps(self._aliases)
+
+#        for k, v in self.nv.items():
+#            if k not in self._dongers:
+#                self._dongers[k] = v
+#
+#        for k, v in self._dongers.items():
+#            if k not in self.nv:
+#                self.nv[k] = v
 
         self.PutModule("WooHoo, flip loaded")
         return znc.CONTINUE
@@ -91,18 +105,25 @@ class flip(znc.Module):
         cmd = command.split()[0]
         args = command.replace(cmd, '').strip()
         outMod = ""
-        if cmd == 'list':
+        if cmd == 'dongers':
             for k, v in self._dongers.items():
                 self.PutModule(("{0}: {1}").format(k, v))
-        if cmd == 'nv':
+        elif cmd == 'nv':
             for k, v in self.nv.items():
+                self.PutModule(("{0}: {1}").format(k, v))
+        elif cmd == 'aliases':
+            for k, v in self._aliases.items():
+                self.PutModule(("{0}: {1}").format(k, v))
+        elif cmd == 'flip_map':
+            for k, v in self._upside_down_map.items():
                 self.PutModule(("{0}: {1}").format(k, v))
         elif cmd == 'add':
             if len(args.split()) > 1:
                 k = args.split()[0]
                 v = args.replace(k, '').strip()
                 self._dongers[k] = v
-                self.nv[k] = v
+#                self.nv[k] = v
+                self.nv['dongers'] = json.dumps(self._dongers)
                 outMod = (("Flip Alias Added: {0}->{1}").format(k, v))
             else:
                 outMod = "Not enough arguments given: {0}".format(args)
@@ -110,7 +131,8 @@ class flip(znc.Module):
             if len(args) > 0:
                 k = args.split()[0]
                 self._dongers.pop(k, None)
-                self.nv.pop(k, None)
+#                self.nv.pop(k, None)
+                self.nv['dongers'] = json.dumps(self._dongers)
                 outMod = "Flip Alias '{0}' Removed.".format(k)
             else:
                 outMod = "A flip alias must be defined in order to remove it."
@@ -154,7 +176,15 @@ class flip(znc.Module):
                 return znc.HALT
 
             outIRC = "PRIVMSG {0} :{1}".format(target, str)
-            outUser = (":{2} PRIVMSG {0} :{1}").format(target, str, user)
+            try:
+                chan = target.s
+                if target.s[:1] == '#':
+                    outUser = (":{2} PRIVMSG {0} :{1}").format(target, str, user)
+                else:
+                    outUser = (":{0} PRIVMSG {0} :EnderBlue: {1}").format(target, str, user)
+            except:
+                outUser = (":{2} PRIVMSG {0} :something bad happened: {1}").format(target, sys.exc_info()[0], user)
+
             outRet = znc.HALT
 
         if outIRC != "":
